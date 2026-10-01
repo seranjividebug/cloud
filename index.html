@@ -18,7 +18,7 @@
 (function(){
   var cache={},frame=document.getElementById('v'),pages=["index","ai-services","ai-services-framework","workshop-applied-enablement","workshop-agentic-diagnostic","story-healthcare-provider","customer-stories","customer-stories-capital-markets","about-us","blogs"],pendingHash='';
   function url(n){if(!cache[n]){var el=document.getElementById('p-'+n);if(!el)return null;cache[n]=URL.createObjectURL(new Blob([JSON.parse(el.textContent)],{type:'text/html'}))}return cache[n]}
-  function go(n,hash,push){var u=url(n);if(!u)return;pendingHash=hash||'';frame.src=u;if(push!==false)history.pushState({n:n,h:hash},'','#/'+n+(hash?'/'+hash:''));document.title='CloudifyAI · '+n.replace(/-/g,' ')}
+  function go(n,hash,push){var u=url(n);if(!u)return;pendingHash=hash||'';frame.contentWindow.location.replace(u);if(push!==false)history.pushState({n:n,h:hash},'','#/'+n+(hash?'/'+hash:''));document.title='CloudifyAI · '+n.replace(/-/g,' ')}
   frame.addEventListener('load',function(){if(pendingHash){var h=pendingHash;pendingHash='';setTimeout(function(){frame.contentWindow.postMessage({__scroll:h},'*')},300)}});
   window.addEventListener('message',function(e){var d=e.data;if(d&&d.__nav&&pages.indexOf(d.__nav)>-1)go(d.__nav,d.hash)});
   window.addEventListener('popstate',function(e){var s=e.state||{n:'index'};go(s.n,s.h,false)});
